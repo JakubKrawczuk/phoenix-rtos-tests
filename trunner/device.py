@@ -15,6 +15,8 @@ try:
 except ImportError:
     pass
 
+from pexpect.exceptions import TIMEOUT, EOF
+
 from .config import PHRTOS_PROJECT_DIR, DEVICE_SERIAL
 from .tools.color import Color
 
@@ -136,7 +138,7 @@ class Phoenixd:
             dispatcher_ready = self.dispatcher_event.wait(timeout=10)
             if not dispatcher_ready:
                 self.kill()
-                msg = f'message dispatcher did not start! Phoenixd output:\n{self.output()}'
+                msg = 'message dispatcher did not start!'
                 raise PhoenixdError(msg)
 
         return self.proc
@@ -149,9 +151,11 @@ class Phoenixd:
         return output
 
     def kill(self):
-        os.killpg(os.getpgid(self.proc.pid), signal.SIGTERM)
+        if self.proc.is_alive():
+            os.killpg(os.getpgid(self.proc.pid), signal.SIGTERM)
+
         self.reader_thread.join(timeout=10)
-        if self.reader_thread.is_alive():
+        if self.reader_thread.is_alive() and self.proc.is_alive():
             os.killpg(os.getpgid(self.proc.pid), signal.SIGKILL)
 
     def __enter__(self):
@@ -357,7 +361,7 @@ class IMXRT106xRunner(DeviceRunner):
                         dst='flash1',
                         off=0
                     )
-        except (pexpect.exceptions.TIMEOUT, pexpect.exceptions.EOF, PloError) as exc:
+        except (TIMEOUT, EOF, PloError, PhoenixdError) as exc:
             exception = f'{exc}\n'
             if phd:
                 exception += Color.colorify('\nPHOENIXD OUTPUT:\n', Color.BOLD)
@@ -378,8 +382,8 @@ class IMXRT106xRunner(DeviceRunner):
                 plo.wait_prompt()
                 with Phoenixd(self.phoenixd_port, dir=load_dir) as phd:
                     plo.app('usb0', test.exec_bin, 'ocram2', 'ocram2')
-        except (pexpect.exceptions.TIMEOUT, pexpect.exceptions.EOF, PloError) as exc:
-            if isinstance(exc, PloError):
+        except (TIMEOUT, EOF, PloError, PhoenixdError) as exc:
+            if isinstance(exc, PloError) or isinstance(exc, PhoenixdError):
                 test.exception = str(exc)
                 test.fail()
             else:  # TIMEOUT or EOF
