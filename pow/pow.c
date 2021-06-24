@@ -3,6 +3,8 @@
 #include <float.h>
 #include "unity_fixture.h"
 
+#define NEGATIVE_ZERO (-0.0)
+
 TEST_GROUP(test_pow);
 
 TEST_SETUP(test_pow)
@@ -18,24 +20,34 @@ TEST_TEAR_DOWN(test_pow)
 //edge cases
 TEST(test_pow, pow_edge)
 {
+	//b=0 e>0
 	TEST_ASSERT_EQUAL_DOUBLE(0, pow(0, 0.3));
+	TEST_ASSERT_EQUAL_DOUBLE(0, pow(NEGATIVE_ZERO, 0.3));
+	TEST_ASSERT_EQUAL_DOUBLE(0, pow(NEGATIVE_ZERO, 2));
 
+	//b=0 e<0
 	TEST_ASSERT_DOUBLE_IS_INF(pow(0, -0.3));
-	TEST_ASSERT_DOUBLE_IS_NEG_INF(pow(-0, -0.3));
+	TEST_ASSERT_DOUBLE_IS_INF(pow(0, -2));
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(pow(NEGATIVE_ZERO, -0.3));
 
+	//b!=0 e=0
 	TEST_ASSERT_EQUAL_DOUBLE(1, pow(0.3, 0));
-	TEST_ASSERT_EQUAL_DOUBLE(1, pow(0.3, -0));
+	TEST_ASSERT_EQUAL_DOUBLE(1, pow(0.3, NEGATIVE_ZERO));
 	TEST_ASSERT_EQUAL_DOUBLE(1, pow(-0.3, 0));
+	TEST_ASSERT_EQUAL_DOUBLE(1, pow(-0.3, 2));
 
 	/*
 	//Value of 0^0 is 1 or 0 (no consensus)
 	TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(pow(0, 0));
-	TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(pow(-0, 0));
-	TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(pow(0, -0));
-	TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(pow(-0, -0));
+	TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(pow(NEGATIVE_ZERO, 0));
+	TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(pow(0, NEGATIVE_ZERO));
+	TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(pow(NEGATIVE_ZERO, NEGATIVE_ZERO));
 	*/
 	//or
 	TEST_ASSERT_EQUAL_DOUBLE(1, pow(0, 0));
+	TEST_ASSERT_EQUAL_DOUBLE(1, pow(NEGATIVE_ZERO, 0));
+	TEST_ASSERT_EQUAL_DOUBLE(1, pow(0, NEGATIVE_ZERO));
+	TEST_ASSERT_EQUAL_DOUBLE(1, pow(NEGATIVE_ZERO, NEGATIVE_ZERO));
 }
 
 //q1 - all positive quater in 2D Cartesian coordinate system (counting anticlockwise)
@@ -68,6 +80,7 @@ TEST_GROUP_RUNNER(test_pow)
 {
 	RUN_TEST_CASE(test_pow, pow_edge);
 	RUN_TEST_CASE(test_pow, pow_q1);
+	//q2,3,4 respectively
 }
 
 void runner(void)
