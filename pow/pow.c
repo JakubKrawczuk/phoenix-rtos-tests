@@ -50,7 +50,10 @@ TEST(test_pow, pow_edge)
 	TEST_ASSERT_EQUAL_DOUBLE(1, pow(NEGATIVE_ZERO, NEGATIVE_ZERO));
 }
 
-//q1 - all positive quater in 2D Cartesian coordinate system (counting anticlockwise)
+/*
+* q1 - all positive quater in 2D Cartesian coordinate system (counting anticlockwise)
+* b>0 e>0
+*/
 TEST(test_pow, pow_q1)
 {
 	//base < 1
@@ -75,12 +78,51 @@ TEST(test_pow, pow_q1)
 	TEST_ASSERT_DOUBLE_IS_INF(pow(DBL_MAX, 1.2));
 }
 
+/*
+* b<0 e>0
+*/
+TEST(test_pow, pow_q2)
+{
+	//imaginary numbers
+	TEST_ASSERT_FLOAT_IS_NAN(pow(-2, 0.3));
+	TEST_ASSERT_FLOAT_IS_NAN(pow(-2, 1.4));
+
+	//positive or negative check 
+	TEST_ASSERT_EQUAL_DOUBLE(16, pow(-2, 4));
+	TEST_ASSERT_EQUAL_DOUBLE(-8, pow(-2, 3));
+}
+
+/*
+* b<0 e<0
+*/
+TEST(test_pow, pow_q3)
+{
+	//imaginary numbers
+	TEST_ASSERT_FLOAT_IS_NAN(pow(-2, -0.3));
+	TEST_ASSERT_FLOAT_IS_NAN(pow(-2, -1.4));
+
+	//positive or negative check
+	TEST_ASSERT_EQUAL_DOUBLE(0.0625, pow(-2, -4));
+	TEST_ASSERT_EQUAL_DOUBLE(-0.125, pow(-2, -3));
+}
+
+/*
+* b>0 e<0
+*/
+TEST(test_pow, pow_q4)
+{
+	//positive or negative check
+	TEST_ASSERT_EQUAL_DOUBLE(0.7578582832552, pow(2, -4));
+	TEST_ASSERT_EQUAL_DOUBLE(0.7192230933248643, pow(3, -0.3));
+}
 
 TEST_GROUP_RUNNER(test_pow)
 {
 	RUN_TEST_CASE(test_pow, pow_edge);
 	RUN_TEST_CASE(test_pow, pow_q1);
-	//q2,3,4 respectively
+	RUN_TEST_CASE(test_pow, pow_q2);
+	RUN_TEST_CASE(test_pow, pow_q3);
+	RUN_TEST_CASE(test_pow, pow_q4);
 }
 
 void runner(void)
