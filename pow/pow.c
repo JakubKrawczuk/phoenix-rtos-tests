@@ -141,6 +141,7 @@ TEST_GROUP_RUNNER(test_pow)
 	RUN_TEST_CASE(test_pow, pow_q2);
 	RUN_TEST_CASE(test_pow, pow_q3);
 	RUN_TEST_CASE(test_pow, pow_q4);
+	RUN_TEST_CASE(test_pow, pow_precision);
 }
 
 void runner(void)
