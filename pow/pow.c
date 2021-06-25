@@ -28,7 +28,7 @@ TEST(test_pow, pow_edge)
 	//b=0 e<0
 	TEST_ASSERT_DOUBLE_IS_INF(pow(0, -0.3));
 	TEST_ASSERT_DOUBLE_IS_INF(pow(0, -2));
-	TEST_ASSERT_DOUBLE_IS_NEG_INF(pow(NEGATIVE_ZERO, -0.3));
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(pow(NEGATIVE_ZERO, -0.3)); //gets positive inf (unreachable code in tested function)
 
 	//b!=0 e=0
 	TEST_ASSERT_EQUAL_DOUBLE(1, pow(0.3, 0));
@@ -87,7 +87,7 @@ TEST(test_pow, pow_q2)
 	TEST_ASSERT_FLOAT_IS_NAN(pow(-2, 0.3));
 	TEST_ASSERT_FLOAT_IS_NAN(pow(-2, 1.4));
 
-	//positive or negative check 
+	//positive or negative check
 	TEST_ASSERT_EQUAL_DOUBLE(16, pow(-2, 4));
 	TEST_ASSERT_EQUAL_DOUBLE(-8, pow(-2, 3));
 }
@@ -112,8 +112,26 @@ TEST(test_pow, pow_q3)
 TEST(test_pow, pow_q4)
 {
 	//positive or negative check
-	TEST_ASSERT_EQUAL_DOUBLE(0.7578582832552, pow(2, -4));
+	TEST_ASSERT_EQUAL_DOUBLE(0.0625, pow(2, -4));
 	TEST_ASSERT_EQUAL_DOUBLE(0.7192230933248643, pow(3, -0.3));
+}
+
+int check_precision(char expected[], char actual[]) {
+	//todo: safety of iterator
+	int i;
+	for (i = 0; i < 20; i++) {
+		if (expected[i] != actual[i])
+			return i;
+	}
+	return i;
+}
+
+TEST(test_pow, pow_precision) {
+	//concept only
+	char expected[25] = "0.6968453019359489301421";
+	char actual[25];
+	fprintf(actual, "%.20f", pow(0.3, 0.3));
+	printf("Precision %i",check_precision(expected, actual));
 }
 
 TEST_GROUP_RUNNER(test_pow)
