@@ -1,7 +1,7 @@
 #include <math.h>
 #include <limits.h>
 #include <float.h>
-//#include <stdio.h>
+#include <stdio.h>
 #include "unity_fixture.h"
 
 #define NEGATIVE_ZERO (-0.0)
