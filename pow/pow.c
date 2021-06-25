@@ -1,6 +1,7 @@
 #include <math.h>
 #include <limits.h>
 #include <float.h>
+#include <stdio.h>
 #include "unity_fixture.h"
 
 #define NEGATIVE_ZERO (-0.0)
@@ -116,6 +117,7 @@ TEST(test_pow, pow_q4)
 	TEST_ASSERT_EQUAL_DOUBLE(0.7192230933248643, pow(3, -0.3));
 }
 
+/*
 int check_precision(char expected[], char actual[]) {
 	//todo: safety of iterator
 	int i;
@@ -133,6 +135,7 @@ TEST(test_pow, pow_precision) {
 	fprintf(actual, "%.20f", pow(0.3, 0.3));
 	printf("Precision %i",check_precision(expected, actual));
 }
+*/
 
 TEST_GROUP_RUNNER(test_pow)
 {
@@ -141,7 +144,7 @@ TEST_GROUP_RUNNER(test_pow)
 	RUN_TEST_CASE(test_pow, pow_q2);
 	RUN_TEST_CASE(test_pow, pow_q3);
 	RUN_TEST_CASE(test_pow, pow_q4);
-	RUN_TEST_CASE(test_pow, pow_precision);
+	//RUN_TEST_CASE(test_pow, pow_precision);
 }
 
 void runner(void)
