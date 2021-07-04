@@ -75,7 +75,7 @@ TEST(test_pow, pow_edge)
 	TEST_ASSERT_EQUAL_DOUBLE(1, pow(0.3, 0));
 	TEST_ASSERT_EQUAL_DOUBLE(1, pow(0.3, NEGATIVE_ZERO));
 	TEST_ASSERT_EQUAL_DOUBLE(1, pow(-0.3, 0));
-	TEST_ASSERT_EQUAL_DOUBLE(1, pow(-0.3, 2));
+	TEST_ASSERT_EQUAL_DOUBLE(1, pow(-0.3, NEGATIVE_ZERO));
 
 	/*
 	//Value of 0^0 is 1 or 0 (no consensus)
