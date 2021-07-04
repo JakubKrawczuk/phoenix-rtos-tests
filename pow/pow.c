@@ -6,6 +6,44 @@
 
 #define NEGATIVE_ZERO (-0.0)
 
+#define DOUBLE_MANTISSA 52
+#define DOUBLE_EXPONENT 11
+#define DOUBLE_SIGN     1
+
+typedef struct {
+	uint64_t
+		mantissa : DOUBLE_MANTISSA,
+		exponent : DOUBLE_EXPONENT,  //przypisuj¹c te wartoœci jest zabezpieczenie przed nadpisaniem pozosta³ych w strukturze (np. gdy podamy wartoœæ wiêksz¹ ni¿ 11 bit)
+		sign : DOUBLE_SIGN;
+} doubleStruct;
+
+union binaryDouble {
+	double d;
+	doubleStruct b;
+};
+
+double getDoubleMaxAccuracy(double v) {
+	union binaryDouble val;
+	int shift = -DOUBLE_MANTISSA;  //2^-52 - accuracy when exponent is 0
+	double accuracy = 1;
+
+	val.d = v;
+	shift += val.b.exponent - 1023;  //exponent is represented as unsigned int but offset is 1023
+	if (shift > 0) {
+		// - 1/2*2*2*2...
+		for (int i = 0; i < shift; i++) {
+			accuracy *= 2;
+		}
+	}
+	else if (shift < 0) {
+		// + 2*2*2*2...
+		for (int i = 0; i > shift; i--) {
+			accuracy /= 2;
+		}
+	}
+	return accuracy;
+}
+
 TEST_GROUP(test_pow);
 
 TEST_SETUP(test_pow)
@@ -118,22 +156,12 @@ TEST(test_pow, pow_q4)
 }
 
 
-int check_precision(char expected[], char actual[]) {
-	//todo: safety of iterator
-	int i;
-	for (i = 0; i < 20; i++) {
-		if (expected[i] != actual[i])
-			return i;
-	}
-	return i;
-}
-
 TEST(test_pow, pow_precision) {
-	//concept only
-	char expected[25] = "0.6968453019359489301421";
-	char actual[25];
-	fprintf(actual, "%.20f", pow(0.3, 0.3));
-	printf("Precision %i",check_precision(expected, actual));
+	//check accuracy relative to double max accuracy (for given value)
+	//pass only if accuracy better or equal 2x max accuracy
+
+	double v = pow(0.3, 0.3);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v), 0.696845301935949, v);
 }
 
 
