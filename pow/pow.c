@@ -12,25 +12,35 @@
 #define DOUBLE_EXPONENT 11
 #define DOUBLE_SIGN     1
 
-typedef struct {
+typedef struct
+{
 	uint64_t
 		mantissa : DOUBLE_MANTISSA,
 		exponent : DOUBLE_EXPONENT,
 		sign : DOUBLE_SIGN;
 } doubleStruct;
 
-union binaryDouble {
+union binaryDouble
+{
 	double d;
 	doubleStruct b;
 };
 
-double getDoubleMaxAccuracy(double v) {
+double getDoubleMaxAccuracy(double v)
+{
 	union binaryDouble val;
 	int shift = -DOUBLE_MANTISSA;  //2^-52 - accuracy when exponent is 0
 	double accuracy = 1;
+	int exponent;
 
 	val.d = v;
-	shift += val.b.exponent - 1023;  //exponent is represented as unsigned int but offset is 1023
+	exponent = val.b.exponent - 1023; //exponent is represented as unsigned int but offset is 1023
+	shift += exponent;
+
+	//infinity Nan etc.
+	if (exponent == 1024)  
+		return INFINITY;
+
 	if (shift > 0) {
 		// - 1/2*2*2*2...
 		for (int i = 0; i < shift; i++) {
@@ -163,7 +173,7 @@ TEST(test_pow, pow_precision) {
 	//pass only if accuracy better or equal 2x max accuracy
 
 	double v = pow(0.3, 0.3);
-	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v), 0.696845301935949, v);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v)*2, 0.696845301935949, v);
 }
 
 
