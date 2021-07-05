@@ -352,7 +352,7 @@ TEST(test_pow, pow_bgt0e0)
 }
 
 //base<0 e=0
-TEST(test_pow, pow_bgt0e0)
+TEST(test_pow, pow_blt0e0)
 {
 	double v;  //for temporary use
 
@@ -480,6 +480,9 @@ TEST_GROUP_RUNNER(test_pow)
 	RUN_TEST_CASE(test_pow, pow_edge);
 	RUN_TEST_CASE(test_pow, pow_b0egt0);
 	RUN_TEST_CASE(test_pow, pow_b0elt0);
+	RUN_TEST_CASE(test_pow, pow_bgt0e0);
+	RUN_TEST_CASE(test_pow, pow_blt0e0);
+	TEST(test_pow, pow_bgt0e0)
 	RUN_TEST_CASE(test_pow, pow_q1);
 	RUN_TEST_CASE(test_pow, pow_q2);
 	RUN_TEST_CASE(test_pow, pow_q3);
