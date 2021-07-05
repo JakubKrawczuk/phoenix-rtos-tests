@@ -102,38 +102,86 @@ TEST(test_pow, pow_edge)
 
 	//b=0 e<0
 	v = pow(0, -DBL_TRUE_MIN);
-	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
 	v = pow(0, -DBL_MIN);
-	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
 	v = pow(0, -1);
-	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
 	v = pow(0, -DBL_MAX);
-	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
 	v = pow(0, -INFINITY);
-	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
 	v = pow(0, -NAN);
-	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
 
 	v = pow(NEGATIVE_ZERO, -DBL_TRUE_MIN);
-	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
 	v = pow(NEGATIVE_ZERO, -DBL_MIN);
-	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
 	v = pow(NEGATIVE_ZERO, -1);
-	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
 	v = pow(NEGATIVE_ZERO, -DBL_MAX);
-	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
 	v = pow(NEGATIVE_ZERO, -INFINITY);
-	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
 	v = pow(NEGATIVE_ZERO, -NAN);
-	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
 
 	if(SKIP_FAILING <= 0) TEST_ASSERT_DOUBLE_IS_NEG_INF(pow(NEGATIVE_ZERO, -0.3)); //gets positive inf (unreachable code in tested function)
 
-	//b!=0 e=0
-	TEST_ASSERT_EQUAL_DOUBLE(1, pow(0.3, 0));
-	TEST_ASSERT_EQUAL_DOUBLE(1, pow(0.3, NEGATIVE_ZERO));
-	TEST_ASSERT_EQUAL_DOUBLE(1, pow(-0.3, 0));
-	TEST_ASSERT_EQUAL_DOUBLE(1, pow(-0.3, NEGATIVE_ZERO));
+	//b>0 e=0
+	v = pow(DBL_TRUE_MIN, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(DBL_MIN, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(1, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(DBL_MAX, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(INFINITY, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(NAN, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+
+	v = pow(DBL_TRUE_MIN, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(DBL_MIN, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(1, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(DBL_MAX, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(INFINITY, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(NAN, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+
+	//b<0 e=0
+	v = pow(-DBL_TRUE_MIN, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-DBL_MIN, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-1, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-DBL_MAX, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-INFINITY, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-NAN, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+
+	v = pow(-DBL_TRUE_MIN, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-DBL_MIN, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-1, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-DBL_MAX, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-INFINITY, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-NAN, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
 
 	/*
 	//Value of 0^0 is 1 or 0 (no consensus)
