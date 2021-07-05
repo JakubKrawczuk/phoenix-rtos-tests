@@ -352,6 +352,53 @@ TEST(test_pow, pow_bgt0e0)
 }
 
 //base<0 e=0
+TEST(test_pow, pow_bgt0e0)
+{
+	double v;  //for temporary use
+
+	//subnormals
+	v = pow(-8.5070074779947304409e-324, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-5.4700889228634501649e-314, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-2.9632080560777316336e-310, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-2.2250738585072009e-308, 0);  //max subnormal
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+
+	v = pow(-8.5070074779947304409e-324, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-5.4700889228634501649e-314, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-2.9632080560777316336e-310, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-2.2250738585072009e-308, NEGATIVE_ZERO);  //max subnormal
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+
+	//normal
+	v = pow(-7.4469280707415617115e-300, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-1.8895501503254452658e-10, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-6.8677543336531501339, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-1.8351115573726972663e3, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-3.6848459649033649121e300, 0);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+
+	v = pow(-7.4469280707415617115e-300, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-1.8895501503254452658e-10, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-6.8677543336531501339, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-1.8351115573726972663e3, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-3.6848459649033649121e300, NEGATIVE_ZERO);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+}
+
 /*
 * q1 - all positive quater in 2D Cartesian coordinate system (counting anticlockwise)
 * b>0 e>0
