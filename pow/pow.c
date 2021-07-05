@@ -463,15 +463,146 @@ TEST(test_pow, pow_q4)
 	//positive or negative check
 	TEST_ASSERT_EQUAL_DOUBLE(0.0625, pow(2, -4));
 	TEST_ASSERT_EQUAL_DOUBLE(0.7192230933248643, pow(3, -0.3));
+
 }
 
 
-TEST(test_pow, pow_precision) {
-	//check accuracy relative to double max accuracy (for given value)
-	//pass only if accuracy better or equal 2x max accuracy
+TEST(test_pow, pow_quick) {
+	// MAX_INT <= e (INT) <= MIN_INT
+	// b!=0 e!=0
 
-	double v = pow(0.3, 0.3);
-	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v)*2, 0.696845301935949, v);
+	double v;  //for temporary use
+	//edge
+	v = pow(-NAN, INT_MIN);
+	TEST_ASSERT_DOUBLE_IS_NAN(v);
+	v = pow(-INFINITY, INT_MIN);
+	TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(v);
+	v = pow(-DBL_MAX, INT_MIN);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(-1, INT_MIN);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(-DBL_MIN, INT_MIN);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+	v = pow(-DBL_TRUE_MIN, INT_MIN);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+
+	v = pow(NAN, INT_MIN);
+	TEST_ASSERT_DOUBLE_IS_NAN(v);
+	v = pow(INFINITY, INT_MIN);
+	TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(v);
+	v = pow(DBL_MAX, INT_MIN);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(1, INT_MIN);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(DBL_MIN, INT_MIN);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+	v = pow(DBL_TRUE_MIN, INT_MIN);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+
+	v = pow(-NAN, INT_MAX);
+	TEST_ASSERT_DOUBLE_IS_NAN(v);
+	v = pow(-INFINITY, INT_MAX);
+	TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(v);
+	v = pow(-DBL_MAX, INT_MAX);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
+	v = pow(-1, INT_MAX);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, -1, v);
+	v = pow(-DBL_MIN, INT_MAX);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(-DBL_TRUE_MIN, INT_MAX);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+
+	v = pow(NAN, INT_MAX);
+	TEST_ASSERT_DOUBLE_IS_NAN(v);
+	v = pow(INFINITY, INT_MAX);
+	TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(v);
+	v = pow(DBL_MAX, INT_MAX);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+	v = pow(1, INT_MAX);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(DBL_MIN, INT_MAX);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(DBL_TRUE_MIN, INT_MAX);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+
+	//e = +-1
+	v = pow(-NAN, 1);
+	TEST_ASSERT_DOUBLE_IS_NAN(v);
+	v = pow(-INFINITY, 1);
+	TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(v);
+	v = pow(-DBL_MAX, 1);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, -DBL_MAX, v);
+	v = pow(-1, 1);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, -1, v);
+	v = pow(-DBL_MIN, 1);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, -DBL_MIN, v);
+	v = pow(-DBL_TRUE_MIN, 1);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, -DBL_TRUE_MIN, v);
+
+	v = pow(NAN, 1);
+	TEST_ASSERT_DOUBLE_IS_NAN(v);
+	v = pow(INFINITY, 1);
+	TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(v);
+	v = pow(DBL_MAX, 1);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, DBL_MAX, v);
+	v = pow(1, 1);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(DBL_MIN, 1);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, DBL_MIN, v);
+	v = pow(DBL_TRUE_MIN, 1);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, DBL_TRUE_MIN, v);
+
+	v = pow(-NAN, -1);
+	TEST_ASSERT_DOUBLE_IS_NAN(v);
+	v = pow(-INFINITY, -1);
+	TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(v);
+	v = pow(-DBL_MAX, -1);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, -5.562684646268003e-309, v);
+	v = pow(-1, -1);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, -1, v);
+	v = pow(-DBL_MIN, -1);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, -4.494232837155790e+307, v);
+	v = pow(-DBL_TRUE_MIN, -1);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
+
+	v = pow(NAN, -1);
+	TEST_ASSERT_DOUBLE_IS_NAN(v);
+	v = pow(INFINITY, -1);
+	TEST_ASSERT_DOUBLE_IS_NOT_DETERMINATE(v);
+	v = pow(DBL_MAX, -1);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 5.562684646268003e-309, v);
+	v = pow(1, -1);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
+	v = pow(DBL_MIN, -1);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 4.494232837155790e+307, v);
+	v = pow(DBL_TRUE_MIN, -1);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+
+	//subnormals
+	v = pow(-8.5070074779947304409e-324, INT_MIN);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+	v = pow(5.4700889228634501649e-314, INT_MAX);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(2.9632080560777316336e-310, 10);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(-DBL_TRUE_MIN, 8);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(2.2250738585072009e-308, -2);  //max subnormal
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+
+	//normal
+	v = pow(-7.4469280707415617115e-300, INT_MIN);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+	v = pow(-1.8895501503254452658e-10, INT_MAX);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(6.8677543336531501339, 10);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 2.334250799601485e+08, v);
+	v = pow(1.8351115573726972663e3, -2);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 2.969443451714097e-07, v)
+	v = pow(DBL_MAX, 4);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+	v = pow(DBL_MIN, 4);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
 }
 
 
@@ -486,7 +617,7 @@ TEST_GROUP_RUNNER(test_pow)
 	RUN_TEST_CASE(test_pow, pow_q2);
 	RUN_TEST_CASE(test_pow, pow_q3);
 	RUN_TEST_CASE(test_pow, pow_q4);
-	RUN_TEST_CASE(test_pow, pow_precision);
+	RUN_TEST_CASE(test_pow, pow_quick);
 }
 
 void runner(void)
