@@ -203,7 +203,7 @@ TEST(test_pow, pow_edge)
 	TEST_ASSERT_EQUAL_DOUBLE(1, pow(NEGATIVE_ZERO, NEGATIVE_ZERO));
 }
 
-//base = 0 e>0
+//base=0 e>0
 TEST(test_pow, pow_b0egt0)
 {
 	double v;  //for temporary use
@@ -250,7 +250,54 @@ TEST(test_pow, pow_b0egt0)
 	v = pow(NEGATIVE_ZERO, 3.6848459649033649121e300);
 	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
 }
-//if(SKIP_FAILING <= 0) TEST_ASSERT_DOUBLE_IS_NEG_INF(pow(NEGATIVE_ZERO, -0.3)); //gets positive inf (unreachable code in tested function)
+
+//base=0 e<0
+TEST(test_pow, pow_b0elt0)
+{
+	double v;  //for temporary use
+
+	//subnormals
+	v = pow(0, -8.5070074779947304409e-324);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+	v = pow(0, -5.4700889228634501649e-314);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+	v = pow(0, -2.9632080560777316336e-310);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+	v = pow(0, -2.2250738585072009e-308);  //max subnormal
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+
+	v = pow(NEGATIVE_ZERO, -8.5070074779947304409e-324);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
+	v = pow(NEGATIVE_ZERO, -5.4700889228634501649e-314);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
+	v = pow(NEGATIVE_ZERO, -2.9632080560777316336e-310);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
+	v = pow(NEGATIVE_ZERO, -2.2250738585072009e-308);  //max subnormal
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
+
+	//normal
+	v = pow(0, -7.4469280707415617115e-300);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+	v = pow(0, -1.8895501503254452658e-10);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+	v = pow(0, -6.8677543336531501339);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+	v = pow(0, -1.8351115573726972663e3);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+	v = pow(0, -3.6848459649033649121e300);
+	TEST_ASSERT_DOUBLE_IS_INF(v);
+
+	v = pow(NEGATIVE_ZERO, -7.4469280707415617115e-300);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
+	v = pow(NEGATIVE_ZERO, -1.8895501503254452658e-10);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
+	v = pow(NEGATIVE_ZERO, -6.8677543336531501339);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
+	v = pow(NEGATIVE_ZERO, -1.8351115573726972663e3);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
+	v = pow(NEGATIVE_ZERO, -3.6848459649033649121e300);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
+}
 
 /*
 * q1 - all positive quater in 2D Cartesian coordinate system (counting anticlockwise)
@@ -332,6 +379,7 @@ TEST_GROUP_RUNNER(test_pow)
 {
 	RUN_TEST_CASE(test_pow, pow_edge);
 	RUN_TEST_CASE(test_pow, pow_b0egt0);
+	RUN_TEST_CASE(test_pow, pow_b0elt0);
 	RUN_TEST_CASE(test_pow, pow_q1);
 	RUN_TEST_CASE(test_pow, pow_q2);
 	RUN_TEST_CASE(test_pow, pow_q3);
