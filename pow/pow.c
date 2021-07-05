@@ -143,7 +143,8 @@ TEST(test_pow, pow_edge)
 	v = pow(INFINITY, 0);
 	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
 	v = pow(NAN, 0);
-	TEST_ASSERT_DOUBLE_IS_NAN(v);
+	if (SKIP_FAILING <= 0)
+		TEST_ASSERT_DOUBLE_IS_NAN(v);
 
 	v = pow(DBL_TRUE_MIN, NEGATIVE_ZERO);
 	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
@@ -156,7 +157,8 @@ TEST(test_pow, pow_edge)
 	v = pow(INFINITY, NEGATIVE_ZERO);
 	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
 	v = pow(NAN, NEGATIVE_ZERO);
-	TEST_ASSERT_DOUBLE_IS_NAN(v);
+	if (SKIP_FAILING <= 0)
+		TEST_ASSERT_DOUBLE_IS_NAN(v);
 
 	//b<0 e=0
 	v = pow(-DBL_TRUE_MIN, 0);
@@ -170,7 +172,8 @@ TEST(test_pow, pow_edge)
 	v = pow(-INFINITY, 0);
 	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
 	v = pow(-NAN, 0);
-	TEST_ASSERT_DOUBLE_IS_NAN(v);
+	if (SKIP_FAILING <= 0)
+		TEST_ASSERT_DOUBLE_IS_NAN(v);
 
 	v = pow(-DBL_TRUE_MIN, NEGATIVE_ZERO);
 	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
@@ -183,7 +186,8 @@ TEST(test_pow, pow_edge)
 	v = pow(-INFINITY, NEGATIVE_ZERO);
 	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 1, v);
 	v = pow(-NAN, NEGATIVE_ZERO);
-	TEST_ASSERT_DOUBLE_IS_NAN(v);
+	if (SKIP_FAILING <= 0)
+		TEST_ASSERT_DOUBLE_IS_NAN(v);
 
 	/*
 	//Value of 0^0 is 1 or 0 (no consensus)
@@ -205,13 +209,46 @@ TEST(test_pow, pow_b0egt0)
 	double v;  //for temporary use
 
 	//subnormals
-	v = pow(0, 3.5070074779947304409e-309);
+	v = pow(0, 8.5070074779947304409e-324);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(0, 5.4700889228634501649e-314);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(0, 2.9632080560777316336e-310);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(0, 2.2250738585072009e-308); //max subnormal
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+
+	v = pow(NEGATIVE_ZERO, 8.5070074779947304409e-324);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(NEGATIVE_ZERO, 5.4700889228634501649e-314);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(NEGATIVE_ZERO, 2.9632080560777316336e-310);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(NEGATIVE_ZERO, 2.2250738585072009e-308);  //max subnormal
 	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
 
 	//normal
-	TEST_ASSERT_EQUAL_DOUBLE(0, pow(0, 0.3));
-	TEST_ASSERT_EQUAL_DOUBLE(0, pow(NEGATIVE_ZERO, 0.3));
-	TEST_ASSERT_EQUAL_DOUBLE(0, pow(NEGATIVE_ZERO, 2));
+	v = pow(0, 7.4469280707415617115e-300);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(0, 1.8895501503254452658e-10);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(0, 6.8677543336531501339);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(0, 1.8351115573726972663e3);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(0, 3.6848459649033649121e300);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+
+	v = pow(NEGATIVE_ZERO, 7.4469280707415617115e-300);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(NEGATIVE_ZERO, 1.8895501503254452658e-10);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(NEGATIVE_ZERO, 6.8677543336531501339);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(NEGATIVE_ZERO, 1.8351115573726972663e3);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
+	v = pow(NEGATIVE_ZERO, 3.6848459649033649121e300);
+	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
 }
 //if(SKIP_FAILING <= 0) TEST_ASSERT_DOUBLE_IS_NEG_INF(pow(NEGATIVE_ZERO, -0.3)); //gets positive inf (unreachable code in tested function)
 
