@@ -125,7 +125,7 @@ TEST(test_pow, pow_edge)
 	v = pow(NEGATIVE_ZERO, -INFINITY);
 	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
 	v = pow(NEGATIVE_ZERO, -NAN);
-	TEST_ASSERT_DOUBLE_IS_NEG_INF(v);
+	TEST_ASSERT_DOUBLE_IS_NEG_INF(v); //TEST_ASSERT_DOUBLE_IS_NAN 
 
 	if(SKIP_FAILING <= 0) TEST_ASSERT_DOUBLE_IS_NEG_INF(pow(NEGATIVE_ZERO, -0.3)); //gets positive inf (unreachable code in tested function)
 
