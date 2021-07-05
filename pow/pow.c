@@ -731,7 +731,7 @@ TEST(test_pow, pow_q3)
 	v = pow(-5.73248069974564864e+20, -5);
 	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, -1.6154257226920298953e-104, v);
 
-v = pow(-5.4044692502304882503e+200, -5);
+	v = pow(-5.4044692502304882503e+200, -5);
 	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, -0.0, v);
 	v = pow(-5.5049025088860857765e+200, -2);
 	TEST_ASSERT_DOUBLE_WITHIN(getDoubleMaxAccuracy(v) * 2, 0, v);
